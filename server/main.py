@@ -105,11 +105,11 @@ async def offer(request):
     offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
 
     pc = RTCPeerConnection()
-    pc_id = "PeerConnection(%s)" % uuid.uuid4()
+    pc_id = f"PeerConnection({uuid.uuid4()})"
     pcs.add(pc)
 
     def log_info(msg, *args):
-        logger.info(pc_id + " " + msg, *args)
+        logger.info(f"{pc_id} {msg}", *args)
 
     log_info("Created for %s", request.remote)
 
@@ -122,7 +122,7 @@ async def offer(request):
         @channel.on("message")
         def on_message(message):
             if isinstance(message, str) and message.startswith("ping"):
-                channel.send("pong" + message[4:])
+                channel.send(f"pong{message[4:]}")
 
     @pc.on("connectionstatechange")
     async def on_connectionstatechange():
